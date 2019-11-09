@@ -1,0 +1,14 @@
+#+TITLE:   doom emacs private config
+#+DATE:    novembre 9, 2019
+#+SINCE:   {replace with next tagged release version}
+#+STARTUP: inlineimages
+
+* Table of Contents :TOC_3:noexport:
+
+* Description
+This is my personal configuration to the project https://github.com/hlissner/doom-emacs
+
+* Configuration
+ - clone doom-emacs in ~/.emacs.d
+ - clone this repository in the folder ~/.doom.d
+ - run ~/.emacs.d/bin/doom install
