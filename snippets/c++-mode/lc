@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: /* --- */
+# key: lc
+# --
+/* ${1:$(make-string (- 77 (- (point) (point-at-bol))) ?-)} */
+$1
