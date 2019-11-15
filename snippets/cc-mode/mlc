@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+#name : /* --- */ /* ...     */ /* --- */
+# expand-env: ((yas/indent-line 'fixed) (yas/wrap-around-region 'nil))
+# --
+/* ${1:$(make-string (- 77 (- (point) (point-at-bol))) ?-)} */
+/* ${1:Title}${1:$(make-string (- 74 (string-width text)) ?\ )} */
+/* ${1:$(make-string (- 77 (- (point) (point-at-bol))) ?-)} */
+$0

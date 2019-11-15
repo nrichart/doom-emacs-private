@@ -1,0 +1,11 @@
+# -*- mode: c++-mode -*-
+# name: void printself(...) cont { ... }
+# --
+void ${1:`(capitalize (file-name-nondirectory (file-name-sans-extension (buffer-file-name))))`}::printself(std::ostream & stream, int indent) const {
+  std::string space;
+  for(Int i = 0; i < indent; i++, space += AKANTU_INDENT);
+
+  stream << space << "${1:$(yas/substr text "[^: ]*")} [" << std::endl;
+
+  stream << space << "]" << std::endl;
+};

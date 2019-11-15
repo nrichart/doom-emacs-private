@@ -1,0 +1,7 @@
+#name : namespace akantu
+# --
+namespace akantu {
+
+`yas/selected-text`$0
+
+} // akantu

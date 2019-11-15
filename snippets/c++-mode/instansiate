@@ -1,0 +1,7 @@
+# name: INSTANTIATE_MATERIAL(...)
+# key: inst
+# --
+INSTANSIATE_MATERIAL(${1:`(yas/replace-all "_" "" (capitalize 
+      			       	      (file-name-nondirectory
+                                          (file-name-sans-extension (buffer-file-name)))))`});
+$0

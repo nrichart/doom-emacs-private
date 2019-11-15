@@ -1,0 +1,9 @@
+#key : once
+#name : #ifndef XXX; #define XXX; #endif
+# --
+#ifndef ${1:__AKANTU_`(upcase (file-name-nondirectory (file-name-sans-extension (buffer-file-name))))`_`(upcase (file-name-extension (buffer-file-name)))`__}
+#define $1
+
+$0
+
+#endif /* $1 */
