@@ -82,7 +82,7 @@
        ;;gist              ; interacting with github gists
        (lookup             ; helps you navigate your code and documentation
         +docsets)          ; ...or in Dash docsets locally
-       ;; lsp
+       lsp
        ;;macos             ; MacOS-specific commands
        magit               ; a git porcelain for Emacs
        ;;make              ; run make tasks from Emacs
@@ -98,7 +98,7 @@
        :lang
        ;;agda              ; types of types of types of types...
        assembly          ; assembly for fun or debugging
-       cc                  ; C/C++/Obj-C madness
+       (cc +lsp)                 ; C/C++/Obj-C madness
        ;;clojure           ; java with a lisp
        ;;common-lisp       ; if you've seen one lisp, you've seen them all
        ;;coq               ; proofs-as-programs
@@ -136,7 +136,7 @@
         ;;+pomodoro        ; be fruitful with the tomato technique
         +present)        ; using org-mode for presentations
        ;;perl              ; write code no one else can comprehend
-       ;;php               ; perl's insecure younger brother
+       php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
        python              ; beautiful is better than ugly
@@ -194,15 +194,27 @@
  '(custom-safe-themes
    (quote
     ("0fe9f7a04e7a00ad99ecacc875c8ccb4153204e29d3e57e9669691e6ed8340ce" "a2286409934b11f2f3b7d89b1eaebb965fd63bc1e0be1c159c02e396afb893c8" "f30aded97e67a487d30f38a1ac48eddb49fdb06ac01ebeaff39439997cbdd869" "2d1fe7c9007a5b76cea4395b0fc664d0c1cfd34bb4f1860300347cdad67fb2f9" "c8f959fb1ea32ddfc0f50db85fea2e7d86b72bb4d106803018be1c3566fd6c72" "728eda145ad16686d4bbb8e50d540563573592013b10c3e2defc493f390f7d83" "f2b83b9388b1a57f6286153130ee704243870d40ae9ec931d0a1798a5a916e76" default)))
+ '(gdb-display-io-nopopup t)
+ '(projectile-project-root-files
+   (quote
+    ("requirements.txt" "setup.py" "TAGS" "CMakeLists.txt")))
  '(safe-local-variable-values
    (quote
-    ((c-default-style . "akantu")
+    ((flycheck-checker . c/c++-clang-tidy)
+     (eval set-background-color "#000015")
+     (c-file-style . akantu)
+     (eval progn color-theme-sanityinc-tomorrow-eighties t)
+     (flycheck-clang-tidy-build-path . "/home/richart/dev/lsms/akantu/build")
+     (c-default-style . "akantu")
      (projectile-enable-caching . t)
-     (projectile-project-name . "Akantu[master]")))))
+     (projectile-project-name . "Akantu[master]"))))
+ '(tramp-remote-path
+   (quote
+    ("/home/richart/opt/spack-view/bin" tramp-default-remote-path "/bin" "/usr/bin" "/sbin" "/usr/sbin" "/usr/local/bin" "/usr/local/sbin" "/local/bin" "/local/freeware/bin" "/local/gnu/bin" "/usr/freeware/bin" "/usr/pkg/bin" "/usr/contrib/bin" "/opt/bin" "/opt/sbin" "/opt/local/bin")) nil (tramp)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(breakpoint-disabled ((t (:foreground "dark salmon")))))

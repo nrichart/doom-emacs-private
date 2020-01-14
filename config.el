@@ -23,9 +23,12 @@
 
 (load! "lisp/akantu-c")
 (c-add-style "akantu" akantu-c-style)
+(load! "lisp/akantu-input")
 
 (map! "<f9>"     #'projectile-compile-project
       "<f5>"     #'clang-format-buffer
+      "C-c ;"    #'comment-region
+      "M-g"      #'goto-line
 
       ;;; treemacs
       (:when (featurep! :ui treemacs)
@@ -47,12 +50,10 @@
 
 (defun mydoom-c-mode-setup ()
   (interactive)
-  (irony-mode)
-  (flycheck-irony-setup)
-  (irony-cdb-autosetup-compile-options)
+  (lsp)
   )
 
-(when (featurep! :lang cc)
+(when (featurep! :lang cc +lsp)
   (progn
     (add-hook! 'c-mode-hook 'mydoom-c-mode-setup)
     (add-hook! 'cc-mode-hook 'mydoom-c-mode-setup)
@@ -61,4 +62,6 @@
 (after! smartparens
   (smartparens-global-mode -1))
 
-(setq doom-theme 'doom-dracula)
+(setq doom-theme 'doom-one)
+
+(load! "lisp/gud-enhancement")

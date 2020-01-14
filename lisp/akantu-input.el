@@ -67,7 +67,7 @@
 
 (defconst akantu-input-font-lock-buffer
   (list
-   '("\\<\\(global\\|material\\|model\\|mesh\\|heat\\|contact\\|friction\\|embedded_interface\\|rules\\|non_local\\|user\\|non_linear_solver\\|model_solver\\|time_step_solver\\|integration_scheme\\)\\>"
+   '("\\<\\(global\\|material\\|model\\|mesh\\|heat\\|contact\\|friction\\|embedded_interface\\|rules\\|non_local\\|user\\|non_linear_solver\\|model_solver\\|time_step_solver\\|integration_scheme\\|solid_mechanics_model\\)\\>"
      1 font-lock-keyword-face) ;; include definition
    '("^[ \t]*\\([A-Za-z][_A-Za-z0-9]*\\)[ \t]*=" 1 font-lock-variable-face)
    '("^[ \t]*\\([_A-Za-z]+\\)[ \t]+\\([_A-Za-z][_A-Za-z0-9]+\\)\\([ \t]+[_A-Za-z][_A-Za-z0-9]*\\)?[ \t]*\\[" 2 font-lock-reference-face)

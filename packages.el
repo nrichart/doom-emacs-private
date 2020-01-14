@@ -7,3 +7,6 @@
 ;; (package! builtin-package :disable t)
 (package! groovy-mode)
 (package! clang-format)
+
+(package! gitlab-ci-mode)
+(package! gitlab-ci-mode-flycheck)
