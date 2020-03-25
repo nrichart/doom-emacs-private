@@ -8,4 +8,4 @@
                        ("akantu" "namespace akantu {\n\n`yas/selected-text`$0\n\n} // akantu\n" "namespace akantu" nil nil nil "/home/richart/.doom.d/snippets/c++-mode/akantu" nil nil)))
 
 
-;;; Do not edit! File generated at Wed Nov 13 11:26:32 2019
+;;; Do not edit! File generated at Tue Dec 10 10:31:50 2019
