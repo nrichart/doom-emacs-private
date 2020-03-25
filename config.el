@@ -19,7 +19,53 @@
       ;; Line numbers are pretty slow all around. The performance boost of
       ;; disabling them outweighs the utility of always keeping them on.
       ;; display-line-numbers-type nil
+
+      ;; On-demand code completion. I don't often need it.
+      company-idle-delay nil
+
+      ;; lsp-ui-sideline is redundant with eldoc and much more invasive, so
+      ;; disable it by default.
+      lsp-ui-sideline-enable nil
+      lsp-enable-indentation nil
+      lsp-enable-on-type-formatting nil
+      lsp-enable-symbol-highlighting nil
+      lsp-enable-file-watchers nil
+
+      lsp-ui-peek-always-show t
+      lsp-ui-flycheck-live-reporting nil
+      lsp-ui-flycheck-enable nil
+
+      lsp-file-watch-ignored (quote
+                              ("[/\\\\]\\.git$"
+                               "[/\\\\]\\.hg$"
+                               "[/\\\\]\\.bzr$"
+                               "[/\\\\]_darcs$"
+                               "[/\\\\]\\.svn$"
+                               "[/\\\\]_FOSSIL_$"
+                               "[/\\\\]\\.idea$"
+                               "[/\\\\]\\.ensime_cache$"
+                               "[/\\\\]\\.eunit$"
+                               "[/\\\\]node_modules$"
+                               "[/\\\\]\\.fslckout$"
+                               "[/\\\\]\\.tox$"
+                               "[/\\\\]\\.stack-work$"
+                               "[/\\\\]\\.bloop$"
+                               "[/\\\\]\\.metals$"
+                               "[/\\\\]target$"
+                               "[/\\\\]\\.deps$"
+                               "[/\\\\]autom4te.cache$"
+                               "[/\\\\]\\.reference$"
+                               "[/\\\\]build.*$"
+                               "[/\\\\]test$"
+                               "[/\\\\]extra-packages$"
+                               "[/\\\\]examples$"))
+
+      ;; Disable help mouse-overs for mode-line segments (i.e. :help-echo text).
+      ;; They're generally unhelpful and only add confusing visual clutter.
+      mode-line-default-help-echo nil
+      show-help-function nil
       )
+(add-to-list 'auto-mode-alist '("\\.F90\\'" . f90-mode))
 
 (load! "lisp/akantu-c")
 (c-add-style "akantu" akantu-c-style)
@@ -47,17 +93,16 @@
 
       )
 
+;; (defun mydoom-c-mode-setup ()
+;;   (interactive)
+;;   (lsp)
+;;   )
 
-(defun mydoom-c-mode-setup ()
-  (interactive)
-  (lsp)
-  )
-
-(when (featurep! :lang cc +lsp)
-  (progn
-    (add-hook! 'c-mode-hook 'mydoom-c-mode-setup)
-    (add-hook! 'cc-mode-hook 'mydoom-c-mode-setup)
-    (add-hook! 'c++-mode-hook 'mydoom-c-mode-setup)))
+;; (when (featurep! :lang cc +lsp)
+;;   (progn
+;;     (add-hook! 'c-mode-hook 'mydoom-c-mode-setup)
+;;     (add-hook! 'cc-mode-hook 'mydoom-c-mode-setup)
+;;     (add-hook! 'c++-mode-hook 'mydoom-c-mode-setup)))
 
 (after! smartparens
   (smartparens-global-mode -1))
