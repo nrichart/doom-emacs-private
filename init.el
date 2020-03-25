@@ -77,8 +77,6 @@
        ;;editorconfig      ; let someone else argue about tabs vs spaces
        ein                 ; tame Jupyter notebooks with emacs
        (eval +overlay)     ; run code, run (also, repls)
-       flycheck            ; tasing you for every semicolon you forget
-       flyspell            ; tasing you for misspelling mispelling
        ;;gist              ; interacting with github gists
        (lookup             ; helps you navigate your code and documentation
         +docsets)          ; ...or in Dash docsets locally
@@ -166,9 +164,13 @@
        ;;irc               ; how neckbeards socialize
        ;;(rss +org)        ; emacs as an RSS reader
        ;;twitter           ; twitter client https://twitter.com/vnought
-       (write            ; emacs for writers (fiction, notes, papers, etc.)
-        +wordnut         ; wordnet (wn) search
-        +langtool)       ; a proofreader (grammar/style check) for Emacs
+       ;;(write            ; emacs for writers (fiction, notes, papers, etc.)
+       ;; +wordnut         ; wordnet (wn) search
+       ;; +langtool)       ; a proofreader (grammar/style check) for Emacs
+
+       :checkers
+       spell
+       syntax
 
        :config
        ;; For literate config users. This will tangle+compile a config.org
