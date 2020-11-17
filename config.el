@@ -2,6 +2,12 @@
 
 ;; Place your private configuration here
 
+(load! "lisp/akantu-c")
+(c-add-style "akantu" akantu-c-style)
+
+(load! "lisp/akantu-input")
+(load! "lisp/poly-yaml-jinja2")
+
 (setq tab-width 2
       tab-always-indent t
       indent-tabs-mode nil
@@ -24,16 +30,16 @@
       company-idle-delay nil
 
       ;; lsp-ui-sideline is redundant with eldoc and much more invasive, so
-      ;; disable it by default.
-      lsp-ui-sideline-enable nil
-      lsp-enable-indentation nil
-      lsp-enable-on-type-formatting nil
-      lsp-enable-symbol-highlighting nil
-      lsp-enable-file-watchers nil
+      ;; ;; disable it by default.
+      ;; lsp-ui-sideline-enable nil
+      ;; lsp-enable-indentation nil
+      ;; lsp-enable-on-type-formatting nil
+      ;; lsp-enable-symbol-highlighting nil
+      ;; lsp-enable-file-watchers nil
 
-      lsp-ui-peek-always-show t
-      lsp-ui-flycheck-live-reporting nil
-      lsp-ui-flycheck-enable nil
+      ;; lsp-ui-peek-always-show t
+      ;; lsp-ui-flycheck-live-reporting nil
+      ;; lsp-ui-flycheck-enable nil
 
       lsp-file-watch-ignored (quote
                               ("[/\\\\]\\.git$"
@@ -64,12 +70,46 @@
       ;; They're generally unhelpful and only add confusing visual clutter.
       mode-line-default-help-echo nil
       show-help-function nil
-      )
-(add-to-list 'auto-mode-alist '("\\.F90\\'" . f90-mode))
 
-(load! "lisp/akantu-c")
-(c-add-style "akantu" akantu-c-style)
-(load! "lisp/akantu-input")
+      global-prettify-symbols-mode nil
+      prettify-symbols-mode -1
+
+      c-default-style (quote
+                       ((c++-mode . "akantu")
+                        (java-mode . "java")
+                        (awk-mode . "awk")
+                        (other . "doom")))
+
+      clang-format-executable "clang-format-11"
+
+      magit-git-executable "git"
+
+      hl-todo-keyword-faces (quote
+                             (("TODO" warning bold)
+                              ("FIXME" error bold)
+                              ("HACK" font-lock-constant-face bold)
+                              ("REVIEW" font-lock-keyword-face bold)
+                              ("NOTE" success bold)
+                              ("DEPRECATED" font-lock-doc-face bold)
+                              ("\\todo" warning bold)
+                              ("\\warning" warning bold)
+                              ("\\deprecated" font-lock-doc-face bold)))
+
+      safe-local-variable-values (quote
+                                  ((c-file-style . akantu)
+                                   (flycheck-checker . c/c++-clang-tidy)
+                                   (eval set-background-color "#000015")
+                                   (projectile-enable-caching . t)
+                                   (projectile-project-name . "Akantu[master]")))
+      )
+
+(setq tramp-remote-path (quote
+                         (tramp-own-remote-path
+                          tramp-default-remote-path)))
+
+(setq vterm-module-cmake-args "-DUSE_SYSTEM_LIBVTERM=yes")
+
+(add-to-list 'auto-mode-alist '("\\.F90\\'" . f90-mode))
 
 (map! "<f9>"     #'projectile-compile-project
       "<f5>"     #'clang-format-buffer
@@ -104,9 +144,22 @@
 ;;     (add-hook! 'cc-mode-hook 'mydoom-c-mode-setup)
 ;;     (add-hook! 'c++-mode-hook 'mydoom-c-mode-setup)))
 
-(after! smartparens
-  (smartparens-global-mode -1))
+(remove-hook 'doom-first-buffer-hook #'smartparens-global-mode)
 
 (setq doom-theme 'doom-one)
 
 (load! "lisp/gud-enhancement")
+
+(when (featurep! +lsp)
+  (make-lsp-client :new-connection (lsp-tramp-connection "clangd")
+                   :major-modes '(c-mode c++-mode)
+                   :remote? t
+                   :server-id 'clangd-remote))
+
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(breakpoint-disabled ((t (:foreground "dark salmon")))))
