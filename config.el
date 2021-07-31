@@ -101,6 +101,8 @@
                                    (eval set-background-color "#000015")
                                    (projectile-enable-caching . t)
                                    (projectile-project-name . "Akantu[master]")))
+
+      org-roam-directory "~/dev/organization/org-roam"
       )
 
 (setq tramp-remote-path (quote
@@ -146,7 +148,8 @@
 
 (remove-hook 'doom-first-buffer-hook #'smartparens-global-mode)
 
-(setq doom-theme 'doom-one)
+;(setq doom-theme 'doom-one)
+(setq doom-theme 'doom-dracula)
 
 (load! "lisp/gud-enhancement")
 

@@ -20,3 +20,7 @@
 (package! platformio-mode)
 
 (package! editorconfig)
+(package! icicles)
+
+(package! scad-mode)
+(package! scad-preview)
