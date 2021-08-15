@@ -102,7 +102,7 @@
                                    (projectile-enable-caching . t)
                                    (projectile-project-name . "Akantu[master]")))
 
-      org-roam-directory "~/dev/organization/org-roam"
+      org-roam-directory "~/.org-roam"
       )
 
 (setq tramp-remote-path (quote

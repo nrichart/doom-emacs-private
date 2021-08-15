@@ -24,3 +24,5 @@
 
 (package! scad-mode)
 (package! scad-preview)
+
+(package! magit-section)
