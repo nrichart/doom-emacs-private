@@ -159,7 +159,16 @@
                    :remote? t
                    :server-id 'clangd-remote))
 
+(transient-append-suffix 'magit-push "-u"
+  '(1 "=s" "Skip gitlab pipeline" "--push-option=ci.skip"))
+(transient-append-suffix 'magit-push "=s"
+  '(1 "=c" "Create mr" "--push-option=merge_request.create"))  ;; create a merge request
+(transient-append-suffix 'magit-push "=c"
+  '(1 "=V" "Set CI variable" "--push-option=ci.variable="))  ;; Will prompt, can only set one extra variable
+(transient-append-suffix 'magit-push "=V"
+  '(1 "=O" "Set push option" "--push-option="))  ;; Will prompt, can only set one extra push option
 
+;;
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
