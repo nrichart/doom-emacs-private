@@ -80,7 +80,9 @@
                         (awk-mode . "awk")
                         (other . "doom")))
 
-      clang-format-executable "clang-format-11"
+      clang-format-executable "clang-format"
+
+      todotxt-file "/home/richart/Documents/todo/todo.txt"
 
       magit-git-executable "git"
 

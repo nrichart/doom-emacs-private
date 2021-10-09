@@ -26,3 +26,8 @@
 (package! scad-preview)
 
 (package! magit-section)
+(package! magit-lfs)
+(package! magit-todos)
+
+;(package! todotxt)
+(package! todotxt-mode)
