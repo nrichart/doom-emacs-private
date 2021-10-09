@@ -26,3 +26,5 @@
 (package! scad-preview)
 
 (package! magit-section)
+
+(package! flymd)
