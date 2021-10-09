@@ -31,3 +31,5 @@
 
 ;(package! todotxt)
 (package! todotxt-mode)
+
+(package! flymd)
