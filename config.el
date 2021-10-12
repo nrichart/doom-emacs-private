@@ -154,6 +154,7 @@
 (setq doom-theme 'doom-dracula)
 
 (load! "lisp/gud-enhancement")
+;(load! "lisp/todotxt-mode")
 
 (when (featurep! +lsp)
   (make-lsp-client :new-connection (lsp-tramp-connection "clangd")
@@ -172,10 +173,3 @@
     '(1 "=O" "Set push option" "--push-option="))  ;; Will prompt, can only set one extra push option
   )
 
-;;
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(breakpoint-disabled ((t (:foreground "dark salmon")))))

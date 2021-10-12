@@ -29,7 +29,6 @@
 (package! magit-lfs)
 (package! magit-todos)
 
-;(package! todotxt)
-(package! todotxt-mode)
+(package! todotxt)
 
 (package! flymd)
