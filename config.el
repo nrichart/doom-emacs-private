@@ -125,6 +125,8 @@
         "<f8>"   #'+treemacs/toggle
         "<C-f8>" #'+treemacs/find-file)
 
+      "<f7>"     #'tototxt
+
       ;;; ivy
       (:when (featurep! :completion ivy)
         :map ivy-minibuffer-map
