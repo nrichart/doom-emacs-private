@@ -82,7 +82,7 @@
 
       clang-format-executable "clang-format"
 
-      todotxt-file "/home/richart/Documents/todo/todo.txt"
+      todotxt-file "/keybase/private/networms/todo/todo.txt"
 
       magit-git-executable "git"
 
