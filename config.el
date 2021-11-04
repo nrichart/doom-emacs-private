@@ -134,59 +134,59 @@
 (map! "<f9>"     #'projectile-compile-project
       "C-c ;"    #'comment-region
       "M-g"      #'goto-line
+      "<f7>"     #'tototxt
 
       (:when (featurep! :editor format)
-       "<f5>"     #'+format/buffer
+        "<f5>"     #'+format/buffer
+        )
 
-      ;;; treemacs
-       (:when (featurep! :ui treemacs)
+      ;;; tr_eemacs
+      (:when (featurep! :ui treemacs)
         "<f8>"   #'+treemacs/toggle
         "<C-f8>" #'+treemacs/find-file)
 
-       "<f7>"     #'tototxt
-
       ;;; ivy
-       (:when (featurep! :completion ivy)
+      (:when (featurep! :completion ivy)
         :map ivy-minibuffer-map
         "TAB"    #'ivy-partial
         [tab]    #'ivy-partial)
 
       ;;; vc
-       (:when (featurep! :emacs vc)
+      (:when (featurep! :emacs vc)
         "C-x g"  #'magit-status)
-       )
+      )
 
-      (remove-hook 'doom-first-buffer-hook #'smartparens-global-mode)
+(remove-hook 'doom-first-buffer-hook #'smartparens-global-mode)
 
                                         ;(setq doom-theme 'doom-one)
-      (setq doom-theme 'doom-dracula)
+(setq doom-theme 'doom-dracula)
 
-      (load! "lisp/gud-enhancement")
+(load! "lisp/gud-enhancement")
 
-      (when (featurep! +lsp)
-        (make-lsp-client :new-connection (lsp-tramp-connection "clangd")
-                         :major-modes '(c-mode c++-mode)
-                         :remote? t
-                         :server-id 'clangd-remote))
+(when (featurep! +lsp)
+  (make-lsp-client :new-connection (lsp-tramp-connection "clangd")
+                   :major-modes '(c-mode c++-mode)
+                   :remote? t
+                   :server-id 'clangd-remote))
 
                                         ;(after! lsp-mode
                                         ;  (set-lsp-priority! 'clangd 1))  ; ccls has priority 0
 
-      (after! magit
-        (setq magit-diff-refine-hunk 'all))
+(after! magit
+  (setq magit-diff-refine-hunk 'all))
 
-      (add-hook! magit-mode
-        (transient-append-suffix 'magit-push "-u"
-          '(1 "=s" "Skip gitlab pipeline" "--push-option=ci.skip"))
-        (transient-append-suffix 'magit-push "=s"
-          '(1 "=c" "Create mr" "--push-option=merge_request.create"))  ;; create a merge request
-        (transient-append-suffix 'magit-push "=c"
-          '(1 "=V" "Set CI variable" "--push-option=ci.variable="))  ;; Will prompt, can only set one extra variable
-        (transient-append-suffix 'magit-push "=V"
-          '(1 "=O" "Set push option" "--push-option="))  ;; Will prompt, can only set one extra push option
-        )
+(add-hook! magit-mode
+  (transient-append-suffix 'magit-push "-u"
+    '(1 "=s" "Skip gitlab pipeline" "--push-option=ci.skip"))
+  (transient-append-suffix 'magit-push "=s"
+    '(1 "=c" "Create mr" "--push-option=merge_request.create"))  ;; create a merge request
+  (transient-append-suffix 'magit-push "=c"
+    '(1 "=V" "Set CI variable" "--push-option=ci.variable="))  ;; Will prompt, can only set one extra variable
+  (transient-append-suffix 'magit-push "=V"
+    '(1 "=O" "Set push option" "--push-option="))  ;; Will prompt, can only set one extra push option
+  )
 
-      (add-hook! 'LaTeX-mode-hook
-        (add-to-list 'TeX-view-program-list '("Evince" "evince --page-index=%(outpage) %o"))
-        (setq TeX-view-program-selection '((output-pdf "Evince")))
-        )
+(add-hook! 'LaTeX-mode-hook
+  (add-to-list 'TeX-view-program-list '("Evince" "evince --page-index=%(outpage) %o"))
+  (setq TeX-view-program-selection '((output-pdf "Evince")))
+  )
