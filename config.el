@@ -8,7 +8,7 @@
 (load! "lisp/akantu-input")
 (load! "lisp/poly-yaml-jinja2")
 
-(setq tab-width 2
+(setq ;;tab-width 2
       tab-always-indent t
       indent-tabs-mode nil
       fill-column 80
@@ -17,6 +17,8 @@
       user-mail-address "nicolas.richart@gmail.ch"
       
       epa-file-encrypt-to user-mail-address
+
+      projectile-project-seatrch-path "~/dev"
 
       ;; ensure fill-paragraph takes doxygen @ markers as start of new
       ;; paragraphs properly
@@ -31,15 +33,15 @@
 
       ;; lsp-ui-sideline is redundant with eldoc and much more invasive, so
       ;; ;; disable it by default.
-      ;; lsp-ui-sideline-enable nil
+      lsp-ui-sideline-enable nil
       ;; lsp-enable-indentation nil
-      ;; lsp-enable-on-type-formatting nil
+      lsp-enable-on-type-formatting t
       ;; lsp-enable-symbol-highlighting nil
       ;; lsp-enable-file-watchers nil
 
-      ;; lsp-ui-peek-always-show t
-      ;; lsp-ui-flycheck-live-reporting nil
-      ;; lsp-ui-flycheck-enable nil
+      lsp-ui-peek-always-show t
+      lsp-ui-flycheck-live-reporting t
+      lsp-ui-flycheck-enable t
 
       lsp-file-watch-ignored (quote
                               ("[/\\\\]\\.git$"
@@ -80,7 +82,8 @@
                         (awk-mode . "awk")
                         (other . "doom")))
 
-      clang-format-executable "clang-format"
+      clang-format-executable "clang-format-14"
+      lsp-clients-clangd-executable "clangd-14"
 
       todotxt-file "/keybase/private/networms/todo/todo.txt"
 
@@ -104,14 +107,25 @@
                                    (projectile-enable-caching . t)
                                    (projectile-project-name . "Akantu[master]")))
 
-      org-roam-directory "~/.org-roam"
+      magit-revision-show-gravatars '("^Author:     " . "^Commit:     ")
+      magit-git-executable "git"
+
+      compilation-scroll-output 'first-error
+
+      vterm-module-cmake-args "-DUSE_SYSTEM_LIBVTERM=yes"
       )
 
 (setq tramp-remote-path (quote
                          (tramp-own-remote-path
                           tramp-default-remote-path)))
 
-(setq vterm-module-cmake-args "-DUSE_SYSTEM_LIBVTERM=yes")
+(setq lsp-clients-clangd-args '("-j=5"
+                                "--background-index"
+                                "--clang-tidy"
+                                "--completion-style=detailed"
+                                "--header-insertion=never"
+                                "--header-insertion-decorators=0"))
+(after! lsp-clangd (set-lsp-priority! 'clangd 2))
 
 (add-to-list 'auto-mode-alist '("\\.F90\\'" . f90-mode))
 
@@ -134,19 +148,7 @@
       ;;; vc
       (:when (featurep! :emacs vc)
         "C-x g"  #'magit-status)
-
       )
-
-;; (defun mydoom-c-mode-setup ()
-;;   (interactive)
-;;   (lsp)
-;;   )
-
-;; (when (featurep! :lang cc +lsp)
-;;   (progn
-;;     (add-hook! 'c-mode-hook 'mydoom-c-mode-setup)
-;;     (add-hook! 'cc-mode-hook 'mydoom-c-mode-setup)
-;;     (add-hook! 'c++-mode-hook 'mydoom-c-mode-setup)))
 
 (remove-hook 'doom-first-buffer-hook #'smartparens-global-mode)
 
@@ -154,13 +156,18 @@
 (setq doom-theme 'doom-dracula)
 
 (load! "lisp/gud-enhancement")
-;(load! "lisp/todotxt-mode")
 
 (when (featurep! +lsp)
   (make-lsp-client :new-connection (lsp-tramp-connection "clangd")
                    :major-modes '(c-mode c++-mode)
                    :remote? t
                    :server-id 'clangd-remote))
+
+;(after! lsp-mode
+;  (set-lsp-priority! 'clangd 1))  ; ccls has priority 0
+
+(after! magit
+  (setq magit-diff-refine-hunk 'all))
 
 (add-hook! magit-mode
   (transient-append-suffix 'magit-push "-u"
@@ -173,3 +180,7 @@
     '(1 "=O" "Set push option" "--push-option="))  ;; Will prompt, can only set one extra push option
   )
 
+(add-hook! 'LaTeX-mode-hook
+  (add-to-list 'TeX-view-program-list '("Evince" "evince --page-index=%(outpage) %o"))
+  (setq TeX-view-program-selection '((output-pdf "Evince")))
+  )

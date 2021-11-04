@@ -17,10 +17,9 @@
 
 (package! cmake-font-lock)
 
-(package! platformio-mode)
+;(package! platformio-mode)
 
-(package! editorconfig)
-(package! icicles)
+;(package! icicles)
 
 (package! scad-mode)
 (package! scad-preview)
@@ -31,4 +30,6 @@
 
 (package! todotxt)
 
-(package! flymd)
+;(package! flymd)
+
+(package! ztree)
