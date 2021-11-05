@@ -18,7 +18,7 @@
 
  epa-file-encrypt-to user-mail-address
 
- projectile-project-seatrch-path "~/dev"
+ projectile-project-search-path '("~/dev")
 
  ;; ensure fill-paragraph takes doxygen @ markers as start of new
  ;; paragraphs properly
@@ -31,17 +31,22 @@
  ;; On-demand code completion. I don't often need it.
  company-idle-delay nil
 
- ;; lsp-ui-sideline is redundant with eldoc and much more invasive, so
- ;; ;; disable it by default.
- lsp-ui-sideline-enable nil
- ;; lsp-enable-indentation nil
- lsp-enable-on-type-formatting t
- ;; lsp-enable-symbol-highlighting nil
- ;; lsp-enable-file-watchers nil
 
- lsp-ui-peek-always-show t
- lsp-ui-flycheck-live-reporting t
+ lsp-enable-indentation nil
+ lsp-enable-on-type-formatting nil
+ lsp-enable-symbol-highlighting nil
+ lsp-enable-file-watchers nil
+
+ ;; lsp-ui-sideline is redundant with eldoc and much more invasive, so
+ ;; disable it by default.
+ lsp-ui-sideline-enable t
+ lsp-ui-peek-enable t
+ lsp-ui-peek-always-show nil
+
  lsp-ui-flycheck-enable t
+ lsp-ui-flycheck-live-reporting t
+
+ lsp-ui-doc-enable nil
 
  lsp-file-watch-ignored (quote
                          ("[/\\\\]\\.git$"
@@ -86,7 +91,6 @@
  lsp-clients-clangd-executable "clangd-14"
 
  todotxt-file "/keybase/private/networms/todo/todo.txt"
- org-roam-db-location "/keybase/private/networms/roam/org-roam.db"
  org-roam-directory "/keybase/private/networms/roam/"
 
  magit-git-executable "git"
@@ -169,8 +173,8 @@
                    :remote? t
                    :server-id 'clangd-remote))
 
-                                        ;(after! lsp-mode
-                                        ;  (set-lsp-priority! 'clangd 1))  ; ccls has priority 0
+(after! lsp-mode
+  (set-lsp-priority! 'clangd 1))  ; ccls has priority 0
 
 (after! magit
   (setq magit-diff-refine-hunk 'all))
