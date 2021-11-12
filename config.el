@@ -87,8 +87,7 @@
                    (awk-mode . "awk")
                    (other . "doom")))
 
- clang-format-executable "clang-format-14"
- lsp-clients-clangd-executable "clangd-14"
+ ;; clang-format-executable "clang-format-14"
 
  todotxt-file "/keybase/private/networms/todo/todo.txt"
  org-roam-directory "/keybase/private/networms/roam/"
@@ -125,13 +124,33 @@
                          (tramp-own-remote-path
                           tramp-default-remote-path)))
 
+(after! lsp-clangd
+  :config
+  (set-lsp-priority! 'clangd 2))
+
 (setq lsp-clients-clangd-args '("-j=5"
                                 "--background-index"
                                 "--clang-tidy"
                                 "--completion-style=detailed"
                                 "--header-insertion=never"
-                                "--header-insertion-decorators=0"))
-(after! lsp-clangd (set-lsp-priority! 'clangd 2))
+                                "--header-insertion-decorators=0")
+      lsp-clients-clangd-executable "clangd-14"
+      lsp-clients-clangd-binary-path "/usr/bin")
+
+(after! ccls
+  (setq ccls-initialization-options '(:index (:comments 2) :completion (:detailedLabel t)))
+  (set-lsp-priority! 'ccls 1)) ; optional as ccls is the default in Doom
+
+(after! eglot
+  :config
+  (add-hook 'f90-mode-hook 'eglot-ensure)
+  (set-eglot-client! 'python-mode '("pylsp"))
+  (set-eglot-client! 'cc-mode '("clangd-14" "-j=3" "--clang-tidy"))
+  (setq exec-path (append exec-path '(
+                                      (concat (getenv "HOME") "/.local/bin/") ;; pyls
+                                      (concat (getenv "HOME") "/.luarocks/bin/") ;; tex
+                                      )))
+  )
 
 (add-to-list 'auto-mode-alist '("\\.F90\\'" . f90-mode))
 
@@ -167,14 +186,14 @@
 
 (load! "lisp/gud-enhancement")
 
-(when (featurep! +lsp)
-  (make-lsp-client :new-connection (lsp-tramp-connection "clangd")
-                   :major-modes '(c-mode c++-mode)
-                   :remote? t
-                   :server-id 'clangd-remote))
+;; (when (featurep! +lsp)
+;;   (make-lsp-client :new-connection (lsp-tramp-connection "clangd")
+;;                    :major-modes '(c-mode c++-mode)
+;;                    :remote? t
+;;                    :server-id 'clangd-remote))
 
-(after! lsp-mode
-  (set-lsp-priority! 'clangd 1))  ; ccls has priority 0
+;;(after! lsp-mode
+;;  (set-lsp-priority! 'clangd 1))  ; ccls has priority 0
 
 (after! magit
   (setq magit-diff-refine-hunk 'all))

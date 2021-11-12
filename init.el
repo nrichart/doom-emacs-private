@@ -93,9 +93,8 @@
        ;;gist              ; interacting with github gists
        lookup              ; navigate your code and its documentation
        (lsp
-        +clangd
-        ;; +ccls
-        ;;+peek
+        ;;+eglot
+        +peek
         )
        (magit             ; a git porcelain for Emacs
         +forge)
@@ -116,7 +115,9 @@
        :lang
        ;;agda              ; types of types of types of types...
        ;;assembly          ; assembly for fun or debugging
-       (cc +lsp)                 ; C/C++/Obj-C madness
+       (cc                 ; C/C++/Obj-C madness
+        +lsp
+        )
        ;;clojure           ; java with a lisp
        ;;common-lisp       ; if you've seen one lisp, you've seen them all
        ;;coq               ; proofs-as-programs
