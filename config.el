@@ -33,7 +33,7 @@
 
 
  lsp-enable-indentation nil
- lsp-enable-on-type-formatting nil
+ ;; lsp-enable-on-type-formatting nil
  lsp-enable-symbol-highlighting nil
  lsp-enable-file-watchers nil
 
@@ -42,6 +42,12 @@
  lsp-ui-sideline-enable t
  lsp-ui-peek-enable t
  lsp-ui-peek-always-show nil
+
+ ;;lsp-ui-flycheck-enable t
+ ;;lsp-ui-flycheck-live-reporting t
+ lsp-pylsp-configuration-sources ["blake"]
+ lsp-pylsp-plugins-flake8-enabled t
+ lsp-pylsp-plugins-pycodestyle-enabled nil
 
  lsp-ui-flycheck-enable t
  lsp-ui-flycheck-live-reporting t
@@ -73,6 +79,9 @@
                           "[/\\\\]extra-packages$"
                           "[/\\\\]examples$"))
 
+ lsp-tex-server 'digestif
+ lsp-disabled-clients '(ccls)
+
  ;; Disable help mouse-overs for mode-line segments (i.e. :help-echo text).
  ;; They're generally unhelpful and only add confusing visual clutter.
  mode-line-default-help-echo nil
@@ -89,8 +98,8 @@
 
  ;; clang-format-executable "clang-format-14"
 
- todotxt-file "/keybase/private/networms/todo/todo.txt"
- org-roam-directory "/keybase/private/networms/roam/"
+ todotxt-file "/home/richart/Clouds/Syncthing/todo/todo.txt"
+ org-roam-directory "/home/richart/Clouds/Syncthing/roam/"
 
  magit-git-executable "git"
 
@@ -124,28 +133,36 @@
                          (tramp-own-remote-path
                           tramp-default-remote-path)))
 
-(after! lsp-clangd
-  :config
-  (set-lsp-priority! 'clangd 2))
-
-(setq lsp-clients-clangd-args '("-j=5"
+;; https://docs.doomemacs.org/latest/modules/lang/cc/
+(setq lsp-clients-clangd-args '("-j=3"
                                 "--background-index"
                                 "--clang-tidy"
                                 "--completion-style=detailed"
                                 "--header-insertion=never"
-                                "--header-insertion-decorators=0")
-      lsp-clients-clangd-executable "clangd-14"
-      lsp-clients-clangd-binary-path "/usr/bin")
+                                "--header-insertion-decorators=0"
+                                "--malloc-trim"
+                                "--pch-storage=disk")
+      lsp-clients-clangd-executable "/home/richart/dev/perso/bin/clangd"
+      lsp-clangd-binary-path "/home/richart/dev/perso/bin/")
+
+;; (when (featurep! +lsp)
+;;   (make-lsp-client :new-connection (lsp-tramp-connection "clangd")
+;;                    :major-modes '(c-mode c++-mode)
+;;                    :remote? t
+;;                    :server-id 'clangd-remote))
+
+(after! lsp-clangd (set-lsp-priority! 'clangd 1))
 
 (after! ccls
-  (setq ccls-initialization-options '(:index (:comments 2) :completion (:detailedLabel t)))
-  (set-lsp-priority! 'ccls 1)) ; optional as ccls is the default in Doom
+  (setq ccls-initialization-options '(:index (:comments 2) :completion (:detailedLabel t))
+        ccls-executable "/home/richart/dev/perso/bin/ccls")
+  (set-lsp-priority! 'ccls 2)) ; optional as ccls is the default in Doom
 
 (after! eglot
   :config
   (add-hook 'f90-mode-hook 'eglot-ensure)
   (set-eglot-client! 'python-mode '("pylsp"))
-  (set-eglot-client! 'cc-mode '("clangd-14" "-j=3" "--clang-tidy"))
+  (set-eglot-client! 'cc-mode '("clangd-14" "-j=2" "--clang-tidy"))
   (setq exec-path (append exec-path '(
                                       (concat (getenv "HOME") "/.local/bin/") ;; pyls
                                       (concat (getenv "HOME") "/.luarocks/bin/") ;; tex
@@ -181,19 +198,10 @@
 
 (remove-hook 'doom-first-buffer-hook #'smartparens-global-mode)
 
-                                        ;(setq doom-theme 'doom-one)
+;;(setq doom-theme 'doom-one)
 (setq doom-theme 'doom-dracula)
 
 (load! "lisp/gud-enhancement")
-
-;; (when (featurep! +lsp)
-;;   (make-lsp-client :new-connection (lsp-tramp-connection "clangd")
-;;                    :major-modes '(c-mode c++-mode)
-;;                    :remote? t
-;;                    :server-id 'clangd-remote))
-
-;;(after! lsp-mode
-;;  (set-lsp-priority! 'clangd 1))  ; ccls has priority 0
 
 (after! magit
   (setq magit-diff-refine-hunk 'all))
