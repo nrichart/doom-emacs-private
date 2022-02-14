@@ -1,10 +1,14 @@
 ;; -*- no-byte-compile: t; -*-
 ;;; .doom.d/packages.el
 
-;;; Examples:
-;; (package! some-package)
-;; (package! another-package :recipe (:host github :repo "username/repo"))
-;; (package! builtin-package :disable t)
+(package! gitconfig-mode
+  :recipe (:host github :repo "magit/git-modes"
+           :files ("gitconfig-mode.el")))
+(package! gitignore-mode
+  :recipe (:host github :repo "magit/git-modes"
+           :files ("gitignore-mode.el")))
+
+
 (package! polymode)
 (package! groovy-mode)
 
@@ -33,3 +37,5 @@
 ;(package! flymd)
 
 (package! ztree)
+
+(unpin! magit forge)
