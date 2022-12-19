@@ -27,12 +27,14 @@
 
 ;(package! icicles)
 
+(package! gmsh-mode)
 (package! scad-mode)
 (package! scad-preview)
 
 (package! magit-section)
 (package! magit-lfs)
 (package! magit-todos)
+(package! magit-delta)
 
 (package! todotxt)
 
@@ -41,3 +43,5 @@
 (package! ztree)
 
 (unpin! magit forge)
+
+(package! slack)
