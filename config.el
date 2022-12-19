@@ -162,7 +162,7 @@
   :config
   (add-hook 'f90-mode-hook 'eglot-ensure)
   (set-eglot-client! 'python-mode '("pylsp"))
-  (set-eglot-client! 'cc-mode '("clangd-14" "-j=2" "--clang-tidy"))
+  (set-eglot-client! 'cc-mode '("clangd-16" "-j=2" "--clang-tidy"))
   (setq exec-path (append exec-path '(
                                       (concat (getenv "HOME") "/.local/bin/") ;; pyls
                                       (concat (getenv "HOME") "/.luarocks/bin/") ;; tex

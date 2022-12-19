@@ -9,6 +9,8 @@
            :files ("gitignore-mode.el")))
 
 
+(package! gmsh-mode)
+
 (package! polymode)
 (package! groovy-mode)
 
