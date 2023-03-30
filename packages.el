@@ -8,6 +8,8 @@
   :recipe (:host github :repo "magit/git-modes"
            :files ("gitignore-mode.el")))
 
+(package! bearbolt
+  :recipe (:host github :repo "joaotavora/beardbolt"))
 
 (package! gmsh-mode)
 
@@ -29,7 +31,7 @@
 
 (package! gmsh-mode)
 (package! scad-mode)
-(package! scad-preview)
+;(package! scad-preview)
 
 (package! magit-section)
 (package! magit-lfs)
