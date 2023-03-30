@@ -127,6 +127,7 @@
  compilation-scroll-output 'first-error
 
  vterm-module-cmake-args "-DUSE_SYSTEM_LIBVTERM=yes"
+ frame-background-mode "dark"
  )
 
 (setq tramp-remote-path (quote
