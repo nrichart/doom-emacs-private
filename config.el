@@ -29,12 +29,11 @@
  ;; display-line-numbers-type nil
 
  ;; On-demand code completion. I don't often need it.
- company-idle-delay nil
-
+ company-idle-delay 0.05
 
  lsp-enable-indentation nil
  ;; lsp-enable-on-type-formatting nil
- lsp-enable-symbol-highlighting nil
+ lsp-enable-symbol-highlighting t
  lsp-enable-file-watchers nil
 
  ;; lsp-ui-sideline is redundant with eldoc and much more invasive, so
@@ -153,6 +152,9 @@
 
 (after! lsp-clangd (set-lsp-priority! 'clangd 1))
 
+(after! lsp-pylsp (set-lsp-priority! 'pylsp 2))
+(after! lsp-pyright (set-lsp-priority! 'pyright 1))
+
 (after! ccls
   (setq ccls-initialization-options '(:index (:comments 2) :completion (:detailedLabel t))
         ccls-executable "/home/richart/dev/perso/bin/ccls")
@@ -221,3 +223,11 @@
   (add-to-list 'TeX-view-program-list '("Evince" "evince --page-index=%(outpage) %o"))
   (setq TeX-view-program-selection '((output-pdf "Evince")))
   )
+
+;; OPTIONAL configuration
+(setq-default
+ gptel-model "mistral:latest"
+ gptel-backend (gptel-make-ollama "Ollama"
+                 :host "localhost:11434"
+                 :stream t
+                 :models '("mistral:latest")))
