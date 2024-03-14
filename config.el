@@ -126,6 +126,7 @@
  compilation-scroll-output 'first-error
 
  vterm-module-cmake-args "-DUSE_SYSTEM_LIBVTERM=yes"
+ frame-background-mode "dark"
  )
 
 (setq tramp-remote-path (quote
@@ -144,11 +145,20 @@
       lsp-clients-clangd-executable "/home/richart/dev/perso/bin/clangd"
       lsp-clangd-binary-path "/home/richart/dev/perso/bin/")
 
-;; (when (featurep! +lsp)
-;;   (make-lsp-client :new-connection (lsp-tramp-connection "clangd")
-;;                    :major-modes '(c-mode c++-mode)
-;;                    :remote? t
-;;                    :server-id 'clangd-remote))
+(when (featurep! +lsp)
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-tramp-connection "/ssh:jed:/home/richart/opt/spack-view/bin/clangd")
+                    :major-modes '(c++-mode)
+                    :remote? t
+                    :server-id 'clangd-remote)))
+
+(when (featurep! +lsp)
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-tramp-connection "/ssh:jed:/home/richart/projects/spack/spack-develop/opt/spack/linux-rhel8-skylake_avx512/gcc-8.5.0/node-js-18.12.1-zt4lzsv7xzyglkxinhi2wlgd3mw5ndna/lib/node_modules/yaml-language-server/bin/yaml-language-server")
+                    :major-modes '(yaml-mode)
+                    :remote? t
+                    :server-id 'yamlls-remote)))
+
 
 (after! lsp-clangd (set-lsp-priority! 'clangd 1))
 
