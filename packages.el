@@ -33,13 +33,13 @@
 
 (package! cmake-font-lock)
 
-;(package! platformio-mode)
+;;;(package! platformio-mode)
 
-;(package! icicles)
+;;;(package! icicles)
 
 (package! gmsh-mode)
 (package! scad-mode)
-;(package! scad-preview)
+                                        ;(package! scad-preview)
 
 (package! magit-section)
 (package! magit-lfs)
@@ -48,12 +48,16 @@
 
 (package! todotxt)
 
-;(package! flymd)
+;;;(package! flymd)
 
 (package! ztree)
 
 (unpin! magit forge)
 
-(package! slack)
+;;;(package! slack)
+
+(package! gptel)
+
+(package! iedit)
 
 (package! puppet-mode)
