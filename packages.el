@@ -39,7 +39,7 @@
 
 (package! gmsh-mode)
 (package! scad-mode)
-;(package! scad-preview)
+                                        ;(package! scad-preview)
 
 (package! magit-section)
 (package! magit-lfs)
@@ -57,4 +57,5 @@
 ;;;(package! slack)
 
 (package! gptel)
-(package! codeium :recipe (:host github :repo "Exafunction/codeium.el"))
+
+(package! iedit)
