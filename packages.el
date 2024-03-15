@@ -55,3 +55,5 @@
 (unpin! magit forge)
 
 (package! slack)
+
+(package! puppet-mode)
