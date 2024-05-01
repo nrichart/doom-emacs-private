@@ -126,14 +126,9 @@
  compilation-scroll-output 'first-error
 
  vterm-module-cmake-args "-DUSE_SYSTEM_LIBVTERM=yes"
- frame-background-mode "dark"
+ ;frame-background-mode "dark"
  )
 
-(setq tramp-remote-path (quote
-                         (tramp-own-remote-path
-                          tramp-default-remote-path)))
-
-;; https://docs.doomemacs.org/latest/modules/lang/cc/
 (setq lsp-clients-clangd-args '("-j=3"
                                 "--background-index"
                                 "--clang-tidy"
@@ -145,52 +140,38 @@
       lsp-clients-clangd-executable "/home/richart/dev/perso/bin/clangd"
       lsp-clangd-binary-path "/home/richart/dev/perso/bin/")
 
-(when (featurep! +lsp)
-  (lsp-register-client
-   (make-lsp-client :new-connection (lsp-tramp-connection "/ssh:jed:/home/richart/opt/spack-view/bin/clangd")
-                    :major-modes '(c++-mode)
-                    :remote? t
-                    :server-id 'clangd-remote)))
-
-(when (featurep! +lsp)
-  (lsp-register-client
-   (make-lsp-client :new-connection (lsp-tramp-connection "/ssh:jed:/home/richart/projects/spack/spack-develop/opt/spack/linux-rhel8-skylake_avx512/gcc-8.5.0/node-js-18.12.1-zt4lzsv7xzyglkxinhi2wlgd3mw5ndna/lib/node_modules/yaml-language-server/bin/yaml-language-server")
-                    :major-modes '(yaml-mode)
-                    :remote? t
-                    :server-id 'yamlls-remote))
-
-
-
-  (add-to-list 'lsp-language-id-configuration
-               '(rst-mode . "rst"))
-
-  (defcustom lsp-rst-ls-command '("rst-ls")
-    "Command to start the RST Language Server."
-    :type 'string)
-
-  (lsp-register-client
-   (make-lsp-client :new-connection (lsp-stdio-connection (lambda () lsp-rst-ls-command))
-                    :major-modes '(rst-mode)
-                    :server-id 'rst-ls))
-  )
-
-
 (after! lsp-clangd (set-lsp-priority! 'clangd 1))
-
-(after! lsp-pylsp (set-lsp-priority! 'pylsp 2))
-(after! lsp-pyright (set-lsp-priority! 'pyright 1))
-
 (after! ccls
   (setq ccls-initialization-options '(:index (:comments 2) :completion (:detailedLabel t))
         ccls-executable "/home/richart/dev/perso/bin/ccls")
   (set-lsp-priority! 'ccls 2)) ; optional as ccls is the default in Doom
 
+(when (featurep! +lsp)
+   (lsp-register-client
+    (make-lsp-client :new-connection (lsp-tramp-connection "/sshx:donbot.local:/home/richart/dev/perso/bin/clangd")
+                     :major-modes '(c++-mode)
+                     :remote? t
+                     :server-id 'clangd-remote)))
+
+(after! lsp-pylsp (set-lsp-priority! 'pylsp 2))
+(after! lsp-pyright (set-lsp-priority! 'pyright 1))
+
 (after! eglot
   :config
   (add-hook 'f90-mode-hook 'eglot-ensure)
   (set-eglot-client! 'python-mode '("pylsp"))
-  (set-eglot-client! 'cc-mode '("clangd-16" "-j=2" "--clang-tidy"))
+  (set-eglot-client! 'cc-mode '("clangd"
+                                "-j=3"
+                                "--background-index"
+                                "--clang-tidy"
+                                "--completion-style=detailed"
+                                "--header-insertion=never"
+                                "--header-insertion-decorators=0"
+                                "--malloc-trim"
+                                "--pch-storage=disk"
+                                ))
   (setq exec-path (append exec-path '(
+                                      (concat (getenv "HOME") "/dev/perso/bin/") ;; clangd
                                       (concat (getenv "HOME") "/.local/bin/") ;; pyls
                                       (concat (getenv "HOME") "/.luarocks/bin/") ;; tex
                                       )))
@@ -202,24 +183,25 @@
       "C-c ;"    #'comment-region
       "M-g"      #'goto-line
       "<f7>"     #'tototxt
+      "C-'"      #'iedit-mode
 
-      (:when (featurep! :editor format)
+      (:when (modulep! :editor format)
         "<f5>"     #'+format/buffer
         )
 
       ;;; tr_eemacs
-      (:when (featurep! :ui treemacs)
+      (:when (modulep! :ui treemacs)
         "<f8>"   #'+treemacs/toggle
         "<C-f8>" #'+treemacs/find-file)
 
       ;;; ivy
-      (:when (featurep! :completion ivy)
+      (:when (modulep! :completion ivy)
         :map ivy-minibuffer-map
         "TAB"    #'ivy-partial
         [tab]    #'ivy-partial)
 
       ;;; vc
-      (:when (featurep! :emacs vc)
+      (:when (modulep! :emacs vc)
         "C-x g"  #'magit-status)
       )
 
@@ -249,6 +231,14 @@
   (setq TeX-view-program-selection '((output-pdf "Evince")))
   )
 
+;;(add-to-list 'tramp-connection-properties
+;;             (list (regexp-quote "/sshx:donbot.local:")
+;;                   "remote-shell" "/usr/bin/zsh"))
+
+;; (use-package! tramp
+;;   (add-to-list 'tramp-remote-path "/home/richart/opt/spack-view/bin"))
+
+
 ;; OPTIONAL configuration
 (setq-default
  gptel-model "mistral:latest"
@@ -256,3 +246,10 @@
                  :host "localhost:11434"
                  :stream t
                  :models '("mistral:latest")))
+
+(let ((alternatives '("doom-emacs-bw-light.svg"
+                      "doom-emacs-flugo-slant_out_purple-small.png"
+                      "doom-emacs-flugo-slant_out_bw-small.png")))
+  (setq fancy-splash-image
+        (concat doom-user-dir "splash/"
+                (nth (random (length alternatives)) alternatives))))
