@@ -1,4 +1,4 @@
-;;; .doom.d/config.el -*- lexical-binding: t; -*-
+;; .doom.d/config.el -*- lexical-binding: t; -*-
 
 ;; Place your private configuration here
 
@@ -31,27 +31,25 @@
  ;; On-demand code completion. I don't often need it.
  company-idle-delay 0.05
 
- lsp-enable-indentation nil
+ ;;lsp-enable-indentation nil
  ;; lsp-enable-on-type-formatting nil
- lsp-enable-symbol-highlighting t
- lsp-enable-file-watchers nil
+ ;;lsp-enable-symbol-highlighting t
+ ;;lsp-enable-file-watchers nil
 
  ;; lsp-ui-sideline is redundant with eldoc and much more invasive, so
  ;; disable it by default.
- lsp-ui-sideline-enable t
- lsp-ui-peek-enable t
- lsp-ui-peek-always-show nil
-
- ;;lsp-ui-flycheck-enable t
- ;;lsp-ui-flycheck-live-reporting t
- lsp-pylsp-configuration-sources ["blake"]
- lsp-pylsp-plugins-flake8-enabled t
- lsp-pylsp-plugins-pycodestyle-enabled nil
+ ;;lsp-ui-sideline-enable t
+ ;;lsp-ui-peek-enable t
+ ;;lsp-ui-peek-always-show nil
 
  lsp-ui-flycheck-enable t
  lsp-ui-flycheck-live-reporting t
 
- lsp-ui-doc-enable nil
+ lsp-pylsp-configuration-sources ["blake"]
+ lsp-pylsp-plugins-flake8-enabled t
+ lsp-pylsp-plugins-pycodestyle-enabled nil
+
+ ;;lsp-ui-doc-enable nil
 
  lsp-file-watch-ignored (quote
                          ("[/\\\\]\\.git$"
@@ -95,23 +93,12 @@
                    (awk-mode . "awk")
                    (other . "doom")))
 
- ;; clang-format-executable "clang-format-14"
+ clang-format-executable "clang-format-16"
 
  todotxt-file "/home/richart/Clouds/Syncthing/todo/todo.txt"
  org-roam-directory "/home/richart/Clouds/Syncthing/roam/"
 
  magit-git-executable "git"
-
- hl-todo-keyword-faces (quote
-                        (("TODO" warning bold)
-                         ("FIXME" error bold)
-                         ("HACK" font-lock-constant-face bold)
-                         ("REVIEW" font-lock-keyword-face bold)
-                         ("NOTE" success bold)
-                         ("DEPRECATED" font-lock-doc-face bold)
-                         ("\\todo" warning bold)
-                         ("\\warning" warning bold)
-                         ("\\deprecated" font-lock-doc-face bold)))
 
  safe-local-variable-values (quote
                              ((c-file-style . akantu)
@@ -126,9 +113,57 @@
  compilation-scroll-output 'first-error
 
  vterm-module-cmake-args "-DUSE_SYSTEM_LIBVTERM=yes"
- ;frame-background-mode "dark"
+ ;;frame-background-mode "dark"
+
+ max-lisp-eval-depth 10000
+
+ doom-font (font-spec :family "Fira Code" :size 14 :weight 'medium)
+ fancy-splash-image (concat doom-user-dir "splash/doom-emacs-color.png")
+ tramp-remote-path (quote
+                    (tramp-own-remote-path
+                     tramp-default-remote-path))
  )
 
+(add-to-list 'auto-mode-alist '("\\.F90\\'" . f90-mode))
+
+(map! "<f9>"     #'projectile-compile-project
+      "C-c ;"    #'comment-region
+      "M-g"      #'goto-line
+      "<f7>"     #'tototxt
+      "C-'"      #'iedit-mode
+
+      (:when (modulep! :editor format)
+        "<f5>"     #'+format/buffer
+        )
+
+      (:when (modulep! :ui window-select)
+        "C-x <left>"     #'windmove-left
+        "C-x <right>"    #'windmove-right
+        "C-x <up>"       #'windmove-up
+        "C-x <down>"     #'windmove-down
+        )
+
+
+      ;;; treemacs
+      (:when (modulep! :ui treemacs)
+        "<f8>"   #'+treemacs/toggle
+        "<C-f8>" #'+treemacs/find-file)
+
+      ;;; ivy
+      (:when (modulep! :completion ivy)
+        :map ivy-minibuffer-map
+        "TAB"    #'ivy-partial
+        [tab]    #'ivy-partial)
+
+      ;;; vc
+      (:when (modulep! :emacs vc)
+        "C-x g"  #'magit-status)
+      )
+
+(remove-hook 'doom-first-buffer-hook #'smartparens-global-mode)
+
+
+;; https://docs.doomemacs.org/latest/modules/lang/cc/
 (setq lsp-clients-clangd-args '("-j=3"
                                 "--background-index"
                                 "--clang-tidy"
@@ -138,20 +173,20 @@
                                 "--malloc-trim"
                                 "--pch-storage=disk")
       lsp-clients-clangd-executable "/home/richart/dev/perso/bin/clangd"
-      lsp-clangd-binary-path "/home/richart/dev/perso/bin/")
+      lsp-clangd-binary-path "/home/richart/dev/perso/bin/"
+      lsp-glsl-executable "glsl-lsp")
 
-(after! lsp-clangd (set-lsp-priority! 'clangd 1))
+(after! lsp-clangd
+  (set-lsp-priority! 'clangd 1)
+  (set-lsp-priority! 'clangd-tramp 1)
+  )
 (after! ccls
   (setq ccls-initialization-options '(:index (:comments 2) :completion (:detailedLabel t))
         ccls-executable "/home/richart/dev/perso/bin/ccls")
-  (set-lsp-priority! 'ccls 2)) ; optional as ccls is the default in Doom
+  (set-lsp-priority! 'ccls 2) ; optional as ccls is the default in Doom
+  (set-lsp-priority! 'ccls-tramp 2)
+  )
 
-(when (featurep! +lsp)
-   (lsp-register-client
-    (make-lsp-client :new-connection (lsp-tramp-connection "/sshx:donbot.local:/home/richart/dev/perso/bin/clangd")
-                     :major-modes '(c++-mode)
-                     :remote? t
-                     :server-id 'clangd-remote)))
 
 (after! lsp-pylsp (set-lsp-priority! 'pylsp 2))
 (after! lsp-pyright (set-lsp-priority! 'pyright 1))
@@ -170,6 +205,7 @@
                                 "--malloc-trim"
                                 "--pch-storage=disk"
                                 ))
+
   (setq exec-path (append exec-path '(
                                       (concat (getenv "HOME") "/dev/perso/bin/") ;; clangd
                                       (concat (getenv "HOME") "/.local/bin/") ;; pyls
@@ -177,38 +213,12 @@
                                       )))
   )
 
-(add-to-list 'auto-mode-alist '("\\.F90\\'" . f90-mode))
-
-(map! "<f9>"     #'projectile-compile-project
-      "C-c ;"    #'comment-region
-      "M-g"      #'goto-line
-      "<f7>"     #'tototxt
-      "C-'"      #'iedit-mode
-
-      (:when (modulep! :editor format)
-        "<f5>"     #'+format/buffer
-        )
-
-      ;;; tr_eemacs
-      (:when (modulep! :ui treemacs)
-        "<f8>"   #'+treemacs/toggle
-        "<C-f8>" #'+treemacs/find-file)
-
-      ;;; ivy
-      (:when (modulep! :completion ivy)
-        :map ivy-minibuffer-map
-        "TAB"    #'ivy-partial
-        [tab]    #'ivy-partial)
-
-      ;;; vc
-      (:when (modulep! :emacs vc)
-        "C-x g"  #'magit-status)
-      )
-
-(remove-hook 'doom-first-buffer-hook #'smartparens-global-mode)
-
 ;;(setq doom-theme 'doom-one)
-(setq doom-theme 'doom-dracula)
+;;(setq doom-theme 'doom-dracula)
+(setq doom-theme 'catppuccin)
+(after! catppuccin
+  (setq catppuccin-flavor 'mocha) ;; 'frappe', 'latte, 'macchiato, or 'mocha
+  (catppuccin-reload))
 
 (load! "lisp/gud-enhancement")
 
@@ -239,17 +249,36 @@
 ;;   (add-to-list 'tramp-remote-path "/home/richart/opt/spack-view/bin"))
 
 
-;; OPTIONAL configuration
-(setq-default
- gptel-model "mistral:latest"
- gptel-backend (gptel-make-ollama "Ollama"
-                 :host "localhost:11434"
-                 :stream t
-                 :models '("mistral:latest")))
+;; (after! gptel
+;;  (setq-default
+;;  gptel-model "mistral:latest"
+;;  gptel-backend (gptel-make-ollama "Ollama"
+;;                  :host "localhost:11434"
+;;                  :stream t
+;;                  :models '("mistral:latest")))
 
-(let ((alternatives '("doom-emacs-bw-light.svg"
-                      "doom-emacs-flugo-slant_out_purple-small.png"
-                      "doom-emacs-flugo-slant_out_bw-small.png")))
-  (setq fancy-splash-image
-        (concat doom-user-dir "splash/"
-                (nth (random (length alternatives)) alternatives))))
+(use-package! ellama
+  :init
+  (setopt ellama-language "English")
+  (require 'llm-ollama)
+  (setopt ellama-provider
+          (make-llm-ollama
+           :chat-model "codellama:7b-code"
+           :embedding-model "codellama:7b-code"
+           :host "192.168.195.25")))
+
+;;(let ((alternatives '("doom-emacs-bw-light.svg"
+;;                      "doom-emacs-flugo-slant_out_purple-small.png"
+;;                      "doom-emacs-flugo-slant_out_bw-small.png")))
+
+(after! ligatures
+  (ligature-set-ligatures '(c++mode) '("->", "and", "or", "!=", "==", "lambda", "::")))
+
+;; accept completion from copilot and fallback to company
+;; (use-package! copilot
+;;   :hook (prog-mode . copilot-mode)
+;;   :bind (:map copilot-completion-map
+;;               ("<tab>" . 'copilot-accept-completion)
+;;               ("TAB" . 'copilot-accept-completion)
+;;               ("C-TAB" . 'copilot-accept-completion-by-word)
+;;               ("C-<tab>" . 'copilot-accept-completion-by-word)))
