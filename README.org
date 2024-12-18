@@ -1,7 +1,7 @@
 * Description
-This is my personal configuration to the project https://github.com/hlissner/doom-emacs
+This is my personal configuration to the project https://github.com/doomemacs/doomemacs
 
 * Configuration
  - clone doom-emacs in ~/.emacs.d
- - clone this repository in the folder ~/.doom.d
+ - clone this repository in the folder ~/.config/doom
  - run ~/.emacs.d/bin/doom install
