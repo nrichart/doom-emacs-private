@@ -79,6 +79,8 @@
  lsp-tex-server 'digestif
  lsp-disabled-clients '(ccls)
 
+ +format-with-lsp t
+
  ;; Disable help mouse-overs for mode-line segments (i.e. :help-echo text).
  ;; They're generally unhelpful and only add confusing visual clutter.
  mode-line-default-help-echo nil
@@ -118,10 +120,13 @@
  max-lisp-eval-depth 10000
 
  doom-font (font-spec :family "Fira Code" :size 14 :weight 'medium)
+ ;;doom-font (font-spec :family "DroidSansM Nerd Font" :size 14 :weight 'medium)
  fancy-splash-image (concat doom-user-dir "splash/doom-emacs-color.png")
  tramp-remote-path (quote
                     (tramp-own-remote-path
                      tramp-default-remote-path))
+
+ x86-lookup-pdf "/home/richart/Downloads/325462-sdm-vol-1-2abcd-3abcd-4.pdf"
  )
 
 (add-to-list 'auto-mode-alist '("\\.F90\\'" . f90-mode))
@@ -162,6 +167,8 @@
 
 (remove-hook 'doom-first-buffer-hook #'smartparens-global-mode)
 
+(after! nasm-mode
+  (add-hook 'asm-mode-hook 'nasm-mode))
 
 ;; https://docs.doomemacs.org/latest/modules/lang/cc/
 (setq lsp-clients-clangd-args '("-j=3"
@@ -179,7 +186,14 @@
 (after! lsp-clangd
   (set-lsp-priority! 'clangd 1)
   (set-lsp-priority! 'clangd-tramp 1)
+
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-tramp-connection "clangd")
+                    :major-modes '(c-mode c++-mode)
+                    :remote? t
+                    :server-id 'clangd-remote))
   )
+
 (after! ccls
   (setq ccls-initialization-options '(:index (:comments 2) :completion (:detailedLabel t))
         ccls-executable "/home/richart/dev/perso/bin/ccls")
@@ -274,11 +288,18 @@
 (after! ligatures
   (ligature-set-ligatures '(c++mode) '("->", "and", "or", "!=", "==", "lambda", "::")))
 
-;; accept completion from copilot and fallback to company
+;; ;; accept completion from copilot and fallback to company
 ;; (use-package! copilot
 ;;   :hook (prog-mode . copilot-mode)
 ;;   :bind (:map copilot-completion-map
 ;;               ("<tab>" . 'copilot-accept-completion)
 ;;               ("TAB" . 'copilot-accept-completion)
 ;;               ("C-TAB" . 'copilot-accept-completion-by-word)
-;;               ("C-<tab>" . 'copilot-accept-completion-by-word)))
+;;               ("C-<tab>" . 'copilot-accept-completion-by-word))
+;;   :config
+;;   (add-to-list 'copilot-indentation-alist '(prog-mode 2))
+;;   (add-to-list 'copilot-indentation-alist '(org-mode 2))
+;;   (add-to-list 'copilot-indentation-alist '(text-mode 2))
+;;   (add-to-list 'copilot-indentation-alist '(closure-mode 2))
+;;   (add-to-list 'copilot-indentation-alist '(emacs-lisp-mode 2))
+;;   )

@@ -21,13 +21,13 @@
 
 (package! gmsh-mode)
 
-;; (package! polymode)
-;; (package! groovy-mode)
+(package! polymode)
+(package! groovy-mode)
 
 (package! clang-format)
 
-;; (package! gitlab-ci-mode)
-;; (package! gitlab-ci-mode-flycheck)
+(package! gitlab-ci-mode)
+(package! gitlab-ci-mode-flycheck)
 
 (package! visual-regexp)
 
@@ -41,10 +41,10 @@
 (package! scad-mode)
                                         ;(package! scad-preview)
 
-;; (package! magit-section)
-;; (package! magit-lfs)
-;; (package! magit-todos)
-;; (package! magit-delta)
+(package! magit-section)
+(package! magit-lfs)
+(package! magit-todos)
+(package! magit-delta)
 
 (package! todotxt)
 
@@ -71,7 +71,9 @@
 
 (package! catppuccin-theme)
 
-;; (package! codeium :recipe (:host github :repo "Exafunction/codeium.el"))
+;;(package! codeium :recipe (:host github :repo "Exafunction/codeium.el"))
 
-;; (package! copilot
-;;   :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el")))
+;;(package! copilot
+;;  :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el")))
+(package! x86-lookup)
+(package! nasm-mode)
